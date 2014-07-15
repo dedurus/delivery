@@ -11,7 +11,10 @@ class BaseController extends Controller {
 	{
 		if ( ! is_null($this->layout))
 		{
-			$this->layout = View::make($this->layout);
+			$data = [
+				'title' => (isset($this->layout->title)) ? $this->layout->title : ' '
+			];
+			$this->layout = View::make($this->layout, $data);
 		}
 	}
 
