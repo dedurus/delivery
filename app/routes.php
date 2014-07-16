@@ -2,36 +2,26 @@
 
 /*
 |--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the Closure to execute when that URI is requested.
-|
-*/
-
-/*
-|--------------------------------------------------------------------------
-| Corporate
-|--------------------------------------------------------------------------
-|
-| Description
-|
- */
-
-Route::get('/', function()
-{
-	return View::make('hello');
-});
-
-/*
-|--------------------------------------------------------------------------
 | Panel Admin
 |--------------------------------------------------------------------------
+| 
+| Routes related to the administration panel.
+| Most routes relating to the administration panel, must be within the 
+| admin prefix
+| If there are exceptions but still refer to the adminstration panel, put 
+| this code block
+|
  */
 
+/**
+ * Group prefix admin
+ */
 Route::group(['prefix' => 'admin'], function(){
+
+	/**
+	 * Group filter admin.guest
+	 * Redirect for route admin.home if the user is authenticated
+	 */
 	Route::group(['before' => 'admin.guest'], function(){
 		Route::get('login', [
 			'as'	=> 'admin.getLogin',
@@ -46,6 +36,10 @@ Route::group(['prefix' => 'admin'], function(){
 		});
 	});
 
+	/**
+	 * Group filter admin.auth
+	 * Redirect for route admin.getLogin if the user is guest
+	 */
 	Route::group(['before' => 'admin.auth'], function(){
 		Route::get('/', [
 			'as'	=> 'admin.home',
@@ -57,6 +51,20 @@ Route::group(['prefix' => 'admin'], function(){
 			'uses'	=> '\Admin\UsersController@logout'
 		]);
 	});
+});
+
+/*
+|--------------------------------------------------------------------------
+| Corporate
+|--------------------------------------------------------------------------
+|
+| Description
+|
+ */
+
+Route::get('/', function()
+{
+	return View::make('hello');
 });
 
 /*

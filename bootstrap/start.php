@@ -42,6 +42,7 @@ $env = $app->detectEnvironment(array(
 */
 
 $app->bindInstallPaths(require __DIR__.'/paths.php');
+$app->bind('Repositories\Admin\Interfaces\UsersInterfaceRepository', 'Repositories\Admin\Controllers\UsersRepository');
 
 /*
 |--------------------------------------------------------------------------

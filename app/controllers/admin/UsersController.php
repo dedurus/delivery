@@ -1,60 +1,60 @@
 <?php namespace Admin;
 
-/**
- *
- */
+use \Repositories\Admin\Interfaces\UsersInterfaceRepository;
+
 class UsersController extends \Admin\BaseController
 {
+    /**
+     * The user repository implementation.
+     * 
+     * @var \Repositories\Admin\Controllers\UsersRepository
+     */
+    protected $users;
 
     /**
-     * undocumented class variable
-     *
-     * @var string
+     * Create a new UserRepository instance.
+     * 
+     * @param \Repositories\Admin\Controllers\UsersRepository $users
+     * @return void
+     */
+    public function __construct(UsersInterfaceRepository $users)
+    {
+        $this->users = $users;
+    }
+
+    /**
+     * The default layout of authentication
+     * 
+     * @var $layout
      **/
     protected $layout = 'admin.layouts.login';
 
     /**
-     * undocumented function summary
+     * View for authentication of users
      *
-     * Undocumented function long description
-     *
-     * @param type var Description
+     * @return void
      **/
     public function getLogin()
     {
-        $this->layout->title = 'SOS - Login';
+        $this->layout->title = 'Login';
         $this->layout->content = \View::make('admin.users.login');
     }
 
     /**
-     * undocumented function summary
+     * Authentication of user
      *
-     * Undocumented function long description
-     *
-     * @param type var Description
+     * @return object redirect view
      **/
     public function postLogin()
     {
-        $validator = \Validator::make(\Input::all(), ['username' => 'required', 'password' => 'required']);
-        if ($validator->fails()) {
-            return \Redirect::route('admin.getLogin')
-                ->withGlobalMessage(trans('admin/users.controller.empry_fields'))
-                ->withInput(\Input::except('password'));
-        } else {
-            $credentials = [
-                'username' => \Input::get('username'),
-                'password' => \Input::get('password'),
-            ];
-            if (\Auth::attempt($credentials, ( boolean ) \Input::get('remember') )) {
-                return \Redirect::route('admin.home');
-            } else {
-                return \Redirect::route('admin.getLogin')
-                    ->withGlobalMessage(trans('admin/users.controller.credentials'))
-                    ->withInput(\Input::except('password'));
-            }
-        }
+        return $this->users->logar();
     }
     
+    /**
+     * Logout of user
+     * 
+     * @return object redirect view
+     */
     public function logout()
     {
         \Auth::logout();
