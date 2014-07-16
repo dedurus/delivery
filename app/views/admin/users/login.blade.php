@@ -1,5 +1,5 @@
 @section('content')
-{{ Form::open(['url' => URL::route('postLogin'), 'method' => 'post', 'class' => 'login-form']) }}
+{{ Form::open(['url' => URL::route('admin.postLogin'), 'method' => 'post', 'class' => 'login-form']) }}
     <h3 class="form-title">{{ trans('admin/users.txt.login_your_account') }}</h3>
     @if (Session::get('global_message'))
         <div class="alert alert-danger">

@@ -58,7 +58,7 @@ Route::filter('admin.auth', function()
 		}
 		else
 		{
-			return Redirect::guest('admin/login');
+			return Redirect::route('admin.getLogin');
 		}
 	}
 });
@@ -87,7 +87,7 @@ Route::filter('guest', function()
 
 Route::filter('admin.guest', function()
 {
-	if (Auth::check()) return Redirect::route('home');
+	if (Auth::check()) return Redirect::route('admin.home');
 });
 
 /*

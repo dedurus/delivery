@@ -3,7 +3,7 @@
 /**
  *
  */
-class UsersController extends \BaseController
+class UsersController extends \Admin\BaseController
 {
 
     /**
@@ -37,7 +37,7 @@ class UsersController extends \BaseController
     {
         $validator = \Validator::make(\Input::all(), ['username' => 'required', 'password' => 'required']);
         if ($validator->fails()) {
-            return \Redirect::route('getLogin')
+            return \Redirect::route('admin.getLogin')
                 ->withGlobalMessage(trans('admin/users.controller.empry_fields'))
                 ->withInput(\Input::except('password'));
         } else {
@@ -46,13 +46,18 @@ class UsersController extends \BaseController
                 'password' => \Input::get('password'),
             ];
             if (\Auth::attempt($credentials, ( boolean ) \Input::get('remember') )) {
-                return \Redirect::route('home');
+                return \Redirect::route('admin.home');
             } else {
-                return \Redirect::route('getLogin')
+                return \Redirect::route('admin.getLogin')
                     ->withGlobalMessage(trans('admin/users.controller.credentials'))
                     ->withInput(\Input::except('password'));
             }
         }
-        
+    }
+    
+    public function logout()
+    {
+        \Auth::logout();
+        return \Redirect::route('admin.getLogin');
     }
 }

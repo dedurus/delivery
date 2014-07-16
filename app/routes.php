@@ -29,21 +29,18 @@ Route::get('/', function()
 |--------------------------------------------------------------------------
 | Panel Admin
 |--------------------------------------------------------------------------
-|
-| Description
-|
  */
 
 Route::group(['prefix' => 'admin'], function(){
 	Route::group(['before' => 'admin.guest'], function(){
 		Route::get('login', [
-			'as'	=> 'getLogin',
+			'as'	=> 'admin.getLogin',
 			'uses'	=> '\Admin\UsersController@getLogin'
 		]);
 
 		Route::group(['before' => 'crsf'], function(){
 			Route::post('login', [
-				'as'	=> 'postLogin',
+				'as'	=> 'admin.postLogin',
 				'uses'	=> '\Admin\UsersController@postLogin'
 			]);
 		});
@@ -51,8 +48,13 @@ Route::group(['prefix' => 'admin'], function(){
 
 	Route::group(['before' => 'admin.auth'], function(){
 		Route::get('/', [
-			'as'	=> 'home',
+			'as'	=> 'admin.home',
 			'uses'	=> '\Admin\HomeController@index'
+		]);
+
+		Route::get(trans('admin/routes.logout'), [
+			'as'	=> 'admin.logout',
+			'uses'	=> '\Admin\UsersController@logout'
 		]);
 	});
 });
